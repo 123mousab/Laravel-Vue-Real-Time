@@ -20,7 +20,11 @@
                 Login
             </v-btn>
             <router-link to="/signup">
-                <v-btn color="blue">Sign Up</v-btn>
+                <v-btn
+                    color="blue"
+                >
+                    Sign Up
+                </v-btn>
             </router-link>
         </v-form>
     </v-container>
@@ -39,10 +43,17 @@
                 }
             }
         },
+        created() {
+            if(User.loggedIn()){
+                this.$router.push({name: 'fourm'})
+            }
+        },
         methods: {
             login() {
                 User.login(this.form);
-            }
+                // dont this => because redirecting in fun responseAfterLogin when window.location = '/fourm'
+                //this.$router.push({name: 'fourm'})
+            },
         }
     }
 </script>

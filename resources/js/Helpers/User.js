@@ -14,11 +14,13 @@ class User {
     }
 
     responseAfterLogin(res) {
-        Token.isVaild(res.data.access_token);
         const token = res.data.access_token;
         const user = res.data.user;
         if (Token.isVaild(res.data.access_token)) {
             AppStorage.store(token, user);
+            // redirecting
+            // window.location = '/ask';
+            window.location = '/fourm';
         }
     }
 
@@ -37,6 +39,7 @@ class User {
 
     logout() {
         AppStorage.clear();
+        window.location = '/fourm';
     }
 
     name() {
@@ -50,6 +53,14 @@ class User {
             const payload = Token.payload(AppStorage.getToken());
             return payload.sub;
         }
+    }
+
+    own(id) {
+        return this.id() == id;
+    }
+
+    admin() {
+        this.id() == 16;
     }
 }
 

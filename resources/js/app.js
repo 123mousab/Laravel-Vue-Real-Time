@@ -13,10 +13,27 @@ import Vuetify from 'vuetify';
 
 Vue.use(Vuetify);
 
-import User from './Helpers/User.js';
-// window.User = User;
+import VueSimplemde from 'vue-simplemde'
+Vue.use(VueSimplemde);
 
-console.log(User.id());
+import md from 'marked';
+window.md = md;
+
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+
+export default new Vuetify({
+    icons: {
+        iconfont: 'mdi', // default - only for display purposes
+    },
+})
+
+import User from './Helpers/User.js';
+window.User = User;
+
+// console.log(User.id());
+console.log(User.loggedIn());
+
+window.EventBus = new Vue();
 
 
 

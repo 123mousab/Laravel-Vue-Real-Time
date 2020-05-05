@@ -3,10 +3,24 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Question extends Model
 {
-    protected $guarded = [];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($question){
+            $question->slug = Str::slug($question->title);
+        });
+    }
+
+//    protected $guarded = [];
+
+    protected $with = ['replies'];
+
+    protected $fillable = ['title','slug','body','user_id','cateogry_id'];
 
     public function getRouteKeyName()
     {
@@ -20,10 +34,10 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }
     public function replies() {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->latest();
     }
     public function getPathAttribute() {
-        return asset("api/question/$this->slug");
+        return "/question/$this->slug";
     }
 
 }

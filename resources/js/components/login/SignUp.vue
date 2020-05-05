@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-form @submit.prevent="signup">
+        <v-form @submit.prevent="signUp">
             <v-text-field
                 v-model="form.name"
                 label="Name"
@@ -24,7 +24,7 @@
             <span class="red--text" v-if="errors.password">{{errors.password[0]}}</span>
             <v-text-field
                 v-model="form.password_confirmation"
-                label="Password"
+                label="password_confirmation"
                 type="password"
                 required
             ></v-text-field>
@@ -36,13 +36,18 @@
                 Sign Up
             </v-btn>
             <router-link to="/login">
-                <v-btn color="blue">Login</v-btn>
+                <v-btn
+                    color="blue"
+                >
+                    Login
+                </v-btn>
             </router-link>
         </v-form>
     </v-container>
 </template>
 
 <script>
+
     import User from "../../Helpers/User";
 
     export default {
@@ -52,26 +57,26 @@
                     name: null,
                     email: null,
                     password: null,
-                    password_confirmation: null
+                    password_confirmation: null,
                 },
                 errors: {}
             }
         },
         methods: {
-            signup() {
-                console.log('form',this.from);
-                axios.post('/api/auth/signup',this.form)
+            signUp() {
+                axios.post('/api/auth/signup', this.form)
                     .then(res => {
-                        // console.log('success');
-                        // console.log(res.data)
+                        console.log(res.data);
                         // Token.payload(res.data.access_token)
-                        this.responseAfterLogin(res);
+                        User.responseAfterLogin(res);
+                        this.$router.push({name: 'fourm'})
                     })
-                    .catch(err => this.errors = err.response.data.error)
+                    .catch(err => this.errors = err.response.data.errors)
             }
         }
     }
 </script>
+
 <style scoped>
 
 </style>
